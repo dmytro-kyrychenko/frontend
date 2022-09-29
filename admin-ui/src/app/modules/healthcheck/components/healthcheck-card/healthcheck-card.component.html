@@ -1,0 +1,37 @@
+<mat-card class="hc-card">
+  <mat-card-header [style.background-color]="statusColor">
+    <mat-card-title>
+      <div class="title-actions-wrap ml-2 d-flex flex-nowrap align-items-center">
+        {{ service.name }}&nbsp;
+        <mat-icon *ngIf="additionalInfo && additionalInfo.length > 0" class="cursor-pointer" (click)="onMessageInfoClick()">info</mat-icon>
+      </div>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-spinner *ngIf="isLoading; else card" class="mx-auto"></mat-spinner>
+    <ng-template #card>
+      <div>
+        <b>Info:</b>&nbsp;
+        <span>{{ info }}</span>
+      </div>
+      <div *ngIf="status !== 'down'">
+        <b>Message:</b>&nbsp;
+        <span>{{ message }}</span>
+      </div>
+      <div *ngIf="status === 'down'">
+        <b>Error:</b>&nbsp;
+        <span>{{ error }}</span>
+      </div>
+      <div>
+        <b>Updated:</b>&nbsp;
+        <span>{{ timestamp | date:'MMM d, y, H:mm':'UTC' }} UTC</span>
+      </div>
+    </ng-template>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button class="hc-reload" [hidden]="isLoading" color="primary"
+      (click)="onReloadClick()">Reload</button>
+  </mat-card-actions>
+</mat-card>

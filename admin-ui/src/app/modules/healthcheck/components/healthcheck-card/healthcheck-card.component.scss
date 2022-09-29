@@ -1,0 +1,28 @@
+.hc-card {
+  height: 100%;
+}
+
+.hc-reload {
+  position: absolute;
+  bottom: 10px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card-header {
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+mat-card-title {
+  color: #ffffff;
+}
+
+mat-card-content {
+  padding: 10px 0;
+}

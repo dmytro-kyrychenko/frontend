@@ -1,0 +1,22 @@
+{
+  "/api/*": {
+    "target": "http://127.0.0.1/",
+    "secure": false
+  },
+  "/yangvalidator/v2/*": {
+    "target": "http://127.0.0.1/",
+    "secure": false
+  },
+  "/yangre/v1/*": {
+    "target": "http://127.0.0.1/",
+    "secure": false
+  },
+  "/private/private.json": {
+    "target": "http://127.0.0.1/",
+    "secure": false
+  },
+  "/private/stats/AllYANGPageMain.json": {
+    "target": "http://127.0.0.1/",
+    "secure": false
+  }
+}

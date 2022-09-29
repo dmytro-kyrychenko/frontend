@@ -1,0 +1,52 @@
+.element {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: none !important;
+  }
+}
+
+.results-grid-container {
+  clear: both;
+  padding-top: 30px;
+}
+
+.green {
+  color: green;
+}
+
+#collapseExpandDiv {
+  a {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+}
+
+.infoline {
+  a {
+    line-height: 42px;
+    padding-right: 10px;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+
+    img {
+      vertical-align: middle;
+      margin-top: -5px;
+    }
+  }
+}
+
+.spinner-border {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-top: -5px;
+}
+
+.bi-question-circle {
+  cursor: pointer;
+}
