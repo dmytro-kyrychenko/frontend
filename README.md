@@ -1,5 +1,10 @@
-# yangcatalog.org
-Static web content for [yangcatalog.org](https://yangcatalog.org/).
+# Frontend
+
+This repository consists of two angular applications:
+- [admin UI](https://github.com/YangCatalog/frontend/tree/master/admin-ui)
+- [yangcatalog UI](https://github.com/YangCatalog/frontend/tree/master/yangcatalog-ui)
+
+In addition, it also contains some static web content for [yangcatalog.org](https://yangcatalog.org/).
 
 ## NGINX Configuration
 
