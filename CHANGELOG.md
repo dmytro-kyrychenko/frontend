@@ -1,6 +1,17 @@
-## Webroot Release Notes
+## Frontend Release Notes
 
 * ##### vm.m.p - 2022-MM-DD
+
+* ##### v5.6.0 - 2022-09-30
+  
+  * web_root, admin_ui and yangcatalog-ui repositories merged into single frontend repository [deployment #154](https://github.com/YangCatalog/deployment/issues/154)
+  * Overview section added to README.md files [deployment #156](https://github.com/YangCatalog/deployment/issues/156)
+  * yangcatalog-ui
+    *  Display list of implementations [#100](https://github.com/YangCatalog/yangcatalog-ui/issues/100)
+  * admin-ui
+    * Angular updated to version 13
+    * 'In progress' status added to the Cronjobs Healthcheck board [#82](https://github.com/YangCatalog/admin_ui/issues/82)
+    * Bugfix: Create record button displayed corectly when table is empty [#80](https://github.com/YangCatalog/admin_ui/issues/80)
 
 * ##### v5.5.0 - 2022-08-16
 
