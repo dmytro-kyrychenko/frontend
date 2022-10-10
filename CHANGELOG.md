@@ -2,6 +2,11 @@
 
 * ##### vm.m.p - 2022-MM-DD
 
+* ##### v5.6.1 - 2022-10-10
+
+  * Autocompletion for IETF drafts in yangvalidator page [#2](https://github.com/YangCatalog/frontend/issues/2)
+  * Update to headers after xym 0.6.1 update [deployment #161](https://github.com/YangCatalog/deployment/issues/161)
+
 * ##### v5.6.0 - 2022-09-30
   
   * web_root, admin_ui and yangcatalog-ui repositories merged into single frontend repository [deployment #154](https://github.com/YangCatalog/deployment/issues/154)
