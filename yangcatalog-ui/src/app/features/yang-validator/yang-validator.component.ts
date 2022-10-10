@@ -1,12 +1,12 @@
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorMessage } from 'ng-bootstrap-form-validation';
-import { merge, Subject } from 'rxjs';
-import { finalize, mergeMap, takeUntil } from 'rxjs/operators';
+import { merge, Observable, of, zip, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { YcValidationsService } from '../../core/yc-validations.service';
 import { FileUploadFormComponent } from '../../shared/file-upload-form/file-upload-form.component';
@@ -31,6 +31,8 @@ export class YangValidatorComponent implements OnInit, OnDestroy {
   rfcNumberForm: FormGroup;
   draftNameForm: FormGroup;
 
+  autocomplete = this.autocompleteDraftRequest.bind(this);
+
   rfcNumberValidation = true;
   draftNameValidation = true;
   filesValidation = true;
@@ -50,6 +52,9 @@ export class YangValidatorComponent implements OnInit, OnDestroy {
     {
       error: 'notNumber',
       format: (label, error) => `${label} has to be a number`
+    }, {
+      error: 'nonexistingDraft',
+      format: (label, error) => `Draft with this name doesn't exist`
     }
   ];
 
@@ -96,7 +101,7 @@ export class YangValidatorComponent implements OnInit, OnDestroy {
 
   private initDraftNameForm() {
     this.draftNameForm = this.formBuilder.group({
-      draftName: ['', Validators.required]
+      draftName: ['', Validators.required, this.getNonexistingValidator()]
     });
   }
 
@@ -114,6 +119,20 @@ export class YangValidatorComponent implements OnInit, OnDestroy {
         return acc;
       }, {});
     });
+  }
+
+  getNonexistingValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.dataService.getDraftAutocomplete(control.value).pipe(
+        map(result => {
+          if (result.indexOf(control.value) === -1) {
+            return { nonexistingDraft: true };
+          } else {
+            return null;
+          }
+        })
+      );
+    };
   }
 
   showRfcNumberForm() {
@@ -230,6 +249,22 @@ export class YangValidatorComponent implements OnInit, OnDestroy {
           }
         }
       );
+  }
+
+  autocompleteDraftRequest(text$: Observable<string>) {
+    return text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      mergeMap(term => {
+        if (term.length > 2) {
+          return this.dataService.getDraftAutocomplete(term.toLowerCase());
+        } else {
+          return of([]);
+        }
+      }
+      ),
+      takeUntil(this.componentDestroyed)
+    );
   }
 
   validateDraftName() {
