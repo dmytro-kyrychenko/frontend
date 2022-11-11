@@ -2,6 +2,12 @@
 
 * ##### vm.m.p - 2022-MM-DD
 
+* ##### v5.7.0 - 2022-11-11
+
+  * type of notifications updated for yangvalidator
+  * fetching versions of validators added [#7](https://github.com/YangCatalog/frontend/issues/7)
+  * checkbox to enable/disable synonyms added [#4](https://github.com/YangCatalog/frontend/issues/4)
+
 * ##### v5.6.1 - 2022-10-10
 
   * Autocompletion for IETF drafts in yangvalidator page [#2](https://github.com/YangCatalog/frontend/issues/2)
