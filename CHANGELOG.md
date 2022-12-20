@@ -1,6 +1,10 @@
 ## Frontend Release Notes
 
-* ##### vm.m.p - 2022-MM-DD
+* ##### vm.m.p - 2023-MM-DD
+
+* ##### v5.8.0 - 2022-12-20
+
+  * Mailing list link updated [#11](https://github.com/YangCatalog/frontend/issues/11)
 
 * ##### v5.7.0 - 2022-11-11
 
