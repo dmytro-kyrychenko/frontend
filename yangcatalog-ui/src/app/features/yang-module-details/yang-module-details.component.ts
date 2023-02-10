@@ -55,6 +55,8 @@ export class YangModuleDetailsComponent implements OnInit, OnDestroy {
 
   private componentDestroyed: Subject<void> = new Subject<void>();
 
+  private revisionsMaturityLevel;
+
   constructor(
     private fb: FormBuilder,
     private dataService: YangModuleDetailsService,
@@ -221,5 +223,14 @@ export class YangModuleDetailsComponent implements OnInit, OnDestroy {
     modalImplemtations.revision = this.infoData.data['revision'];
     modalImplemtations.metadata = this.metaData.getPropertiesSorted(this.metaData.metaData['implementations'])
     modalImplemtations.implementations = this.infoData.data['implementations'] ? this.infoData.data['implementations'] : [];
+  }
+
+  checkIfRatified(revision: string) {
+    for (var revMat of this.infoData['revisions']) {
+      if (revMat['revision'] == revision) {
+        return revMat['is_rfc'];
+      }
+    }
+    return false;
   }
 }
