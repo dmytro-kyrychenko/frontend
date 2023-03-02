@@ -79,8 +79,8 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     headerComponentParams: this.headerComponentParams
   };
   gridOptions: GridOptions = {
-    onFirstDataRendered: () => { return this.headerHeightGetter; },
-    onColumnResized: () => { return this.headerHeightGetter; }
+    onFirstDataRendered: () => this.headerHeightGetter,
+    onColumnResized: () => this.headerHeightGetter
   };
   resultsMaximized = false;
   searchedTermToBeHighlighted = '';
@@ -103,7 +103,7 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     const tallestHeaderTextHeight = Math.max(...clientHeights);
 
     return tallestHeaderTextHeight;
-  };
+  }
 
   ngOnInit() {
     this.setColumnsList();
@@ -244,12 +244,12 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchedTermToBeHighlighted = this.form.get('searchTerm').value;
     this.results = null;
     this.showWarnings = true;
-    this.warnings = []
+    this.warnings = [];
     this.currentColDefs = this.allColDefs.filter((col: ColDef) => this.form.get('outputColumns').value.indexOf(col.field) !== -1);
     const input = {
       'searched-term': this.form.get('searchTerm').value,
       'case-sensitive': this.form.get('searchOptions').get('caseSensitive').value,
-      'type': this.form.get('searchOptions').get('regularExpression').value ? 'regexp' : 'term',
+      type: this.form.get('searchOptions').get('regularExpression').value ? 'regexp' : 'term',
       'include-mibs': this.form.get('searchOptions').get('includeMibs').value,
       'latest-revision': this.form.get('searchOptions').get('onlyLatestRevs').value,
       'use-synonyms': this.form.get('searchOptions').get('useSynonyms').value,
@@ -266,10 +266,10 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     ).subscribe(
       results => {
         if (results['max-hits']) {
-          this.warnings.push('Maximum number of results reached. Not all results will be shown.')
+          this.warnings.push('Maximum number of results reached. Not all results will be shown.');
         }
         if (results['timeout']) {
-          this.warnings.push('Timeout while searching. Please try searching for something more specific.')
+          this.warnings.push('Timeout while searching. Please try searching for something more specific.');
         }
         this.results = results;
       },

@@ -19,10 +19,7 @@ import { FormsModule } from '@angular/forms';
 export class AppAgGridModule {
     static withComponents(components?: any): ModuleWithProviders<AppAgGridModule> {
         return {
-            ngModule: AppAgGridModule,
-            providers: [
-                {provide: ANALYZE_FOR_ENTRY_COMPONENTS, useValue: components, multi: true}
-            ],
+            ngModule: AppAgGridModule
         };
     }
 }
