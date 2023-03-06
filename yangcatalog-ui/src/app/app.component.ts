@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { MatomoTracker } from '@ngx-matomo/tracker';
 import { TitleService } from './shared/title/title.service';
 import { ToastrService } from 'ngx-toastr';
-import notification_json from './shared/notification.json';
+import { AppService } from './app.service';
 
 @Component({
   selector: 'yc-root',
@@ -19,18 +19,24 @@ export class AppComponent implements OnInit {
     private titleService: TitleService,
     private title: Title,
     private tracker: MatomoTracker,
+    private dataService: AppService,
     private toastrService: ToastrService) {
       this.toastr = toastrService;
     }
 
-  public showNotificationIfNotEmpty() {
-    if ('type' in notification_json && 'message' in notification_json) {
-      if (notification_json['type'] == 'info') {
-        this.toastr.info(notification_json['message'], '', {disableTimeOut: true, closeButton: true, positionClass: "toast-bottom-right"});
-      } else if (notification_json['type'] == 'warning') {
-        this.toastr.warning(notification_json['message'], '', {disableTimeOut: true, closeButton: true, positionClass: "toast-bottom-right"});
-      }
-    }
+  public showNotification() {
+    this.dataService.getNotificationJson().subscribe(
+      notification_json => {
+        if ('type' in notification_json && 'message' in notification_json) {
+          if (notification_json['type'] == 'info') {
+            this.toastr.info(notification_json['message'], '', {disableTimeOut: true, closeButton: true, positionClass: "toast-bottom-right"});
+          } else if (notification_json['type'] == 'warning') {
+            this.toastr.warning(notification_json['message'], '', {disableTimeOut: true, closeButton: true, positionClass: "toast-bottom-right"});
+          }
+        }
+      },
+      error => {}
+    );
   }
 
   ngOnInit() {
@@ -41,6 +47,6 @@ export class AppComponent implements OnInit {
         this.tracker.trackPageView(pageTitle);
       });
     
-    this.showNotificationIfNotEmpty();
+    this.showNotification();
   }
 }
