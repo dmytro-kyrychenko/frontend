@@ -12,7 +12,7 @@ import { AppService } from './app.service';
 })
 export class AppComponent implements OnInit {
   private toastr: ToastrService;
-  
+
   defaultTitle = 'YANG Catalog';
 
   constructor(
@@ -29,9 +29,9 @@ export class AppComponent implements OnInit {
       notification_json => {
         if ('type' in notification_json && 'message' in notification_json) {
           if (notification_json['type'] == 'info') {
-            this.toastr.info(notification_json['message'], '', {disableTimeOut: true, closeButton: true, positionClass: "toast-bottom-right"});
+            this.toastr.info(notification_json['message'], '', {disableTimeOut: true, closeButton: true, positionClass: 'toast-bottom-right'});
           } else if (notification_json['type'] == 'warning') {
-            this.toastr.warning(notification_json['message'], '', {disableTimeOut: true, closeButton: true, positionClass: "toast-bottom-right"});
+            this.toastr.warning(notification_json['message'], '', {disableTimeOut: true, closeButton: true, positionClass: 'toast-bottom-right'});
           }
         }
       },
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
         this.title.setTitle(pageTitle);
         this.tracker.trackPageView(pageTitle);
       });
-    
+
     this.showNotification();
   }
 }
