@@ -91,7 +91,8 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     private dataService: YangSearchService,
     private modalService: NgbModal,
     private ycValidations: YcValidationsService
-  ) { }
+  ) {}
+
 
   headerHeightGetter = () => {
     const columnHeaderTexts = [
