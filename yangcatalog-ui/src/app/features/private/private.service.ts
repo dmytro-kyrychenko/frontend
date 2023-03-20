@@ -71,9 +71,9 @@ export class PrivateService extends DataService {
 
   private transformObjDataToRows(objData: any) {
     const result = Object.keys(objData).map(key => {
-      var keyData = Object.assign([], objData[key]['compilation_metadata']);
+      const keyData = Object.assign([], objData[key]['compilation_metadata']);
       ['pyang_lint', 'pyang', 'confdrc', 'yumadump', 'yanglint'].forEach(compRes => {
-        keyData.push(objData[key]['compilation_results'][compRes])        
+        keyData.push(objData[key]['compilation_results'][compRes]);
       });
       keyData.unshift(key);
       return keyData;
