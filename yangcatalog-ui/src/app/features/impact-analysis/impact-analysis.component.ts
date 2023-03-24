@@ -753,8 +753,8 @@ export class ImpactAnalysisComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   updateTopologyByQueryParams() {
-    this.form.get('allowRfc').setValue(this.queryParams['rfcs'] == 0 ? false : true);
-    this.form.get('allowSubmodules').setValue(this.queryParams['show_subm'] == 0 ? false : true);
+    this.form.get('allowRfc').setValue(this.queryParams['rfcs'] === 0 ? false : true);
+    this.form.get('allowSubmodules').setValue(this.queryParams['show_subm'] === 0 ? false : true);
 
     switch (this.queryParams['show_dir']) {
       case 'dependencies':

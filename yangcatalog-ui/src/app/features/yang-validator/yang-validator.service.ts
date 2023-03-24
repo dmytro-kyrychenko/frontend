@@ -23,7 +23,7 @@ export class YangValidatorService extends DataService {
     }).pipe(
       map(output => {
         if (output.hasOwnProperty('Type')) {
-          if (output['Type'] == 'error' || output['Type'] == 'info') {
+          if (output['Type'] === 'error' || output['Type'] === 'info') {
             throw new ValidationError(output['Message'], output['Type']);
           }
         }
@@ -43,7 +43,7 @@ export class YangValidatorService extends DataService {
     }).pipe(
       map(output => {
         if (output.hasOwnProperty('Type')) {
-          if (output['Type'] == 'error' || output['Type'] == 'info') {
+          if (output['Type'] === 'error' || output['Type'] === 'info') {
             throw new ValidationError(output['Message'], output['Type']);
           }
         }
@@ -68,7 +68,7 @@ export class YangValidatorService extends DataService {
       .pipe(
         map(output => {
           if (output.hasOwnProperty('Type')) {
-            if (output['Type'] == 'error' || output['Type'] == 'info') {
+            if (output['Type'] === 'error' || output['Type'] === 'info') {
               throw new ValidationError(output['Message'], output['Type']);
             }
           }
@@ -82,7 +82,7 @@ export class YangValidatorService extends DataService {
       .pipe(
         map(output => {
           if (output.hasOwnProperty('Type')) {
-            if (output['Type'] == 'error' || output['Type'] == 'info') {
+            if (output['Type'] === 'error' || output['Type'] === 'info') {
               throw new ValidationError(output['Message'], output['Type']);
             }
           }

@@ -88,7 +88,7 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     private dataService: YangSearchService,
     private modalService: NgbModal,
     private ycValidations: YcValidationsService
-  ) {}
+  ) { }
 
 
   headerHeightGetter = () => {
@@ -241,19 +241,19 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   selectAdvanceSearch(isAdvTab: boolean) {
-    const el_input = document.getElementById('searchTermInput');
-    const el_label = document.getElementById('searchTermInputLabel');
+    const termInput = document.getElementById('searchTermInput');
+    const termLabel = document.getElementById('searchTermInputLabel');
 
-    if (isAdvTab && el_input.style.display !== 'none') {
-      el_input.style.display = 'none';
-      el_label.style.display = 'none';
+    if (isAdvTab && termInput.style.display !== 'none') {
+      termInput.style.display = 'none';
+      termLabel.style.display = 'none';
 
       // Updating validator so that main search term is empty
       this.form.get('searchTerm').setValidators([]);
 
-    } else if (!isAdvTab && el_input.style.display === 'none') {
-      el_input.style.display = 'block';
-      el_label.style.display = 'block';
+    } else if (!isAdvTab && termInput.style.display === 'none') {
+      termInput.style.display = 'block';
+      termLabel.style.display = 'block';
 
       // Updating validator so that main search term is not empty
       this.form.get('searchTerm').setValidators([Validators.required, Validators.minLength(3), this.ycValidations.regexpValidation()]);
@@ -270,9 +270,9 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showWarnings = true;
     this.warnings = [];
     this.currentColDefs = this.allColDefs.filter((col: ColDef) => this.form.get('outputColumns').value.indexOf(col.field) !== -1);
-    let subSearchInput = this.prepareSubSearchInput();  // params in Advanced Search tab
+    const subSearchInput = this.prepareSubSearchInput();  // params in Advanced Search tab
 
-    if (subSearchInput.length == 0) {
+    if (subSearchInput.length === 0) {
       // simple search
       console.log('simple search without advanced params');
 
@@ -315,19 +315,19 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log('advanced search with params:');
       console.log(subSearchInput);
 
-      let processedSubSearchInput: AdvancedSubSearchInput = {};
+      const processedSubSearchInput: AdvancedSubSearchInput = {};
       // TODO - now we just use the first group, maybe in the future we will return to multiple
       console.log(subSearchInput);
       Object.keys(subSearchInput[0]).forEach(key => {
-        processedSubSearchInput[key] = {string: subSearchInput[0][key][0]['term'], must: subSearchInput[0][key][0]['must']};
+        processedSubSearchInput[key] = { string: subSearchInput[0][key][0]['term'], must: subSearchInput[0][key][0]['must'] };
         if (subSearchInput[0][key][0].hasOwnProperty('regex')) {
           processedSubSearchInput[key]['regex'] = subSearchInput[0][key][0]['regex'];
         }
-        if (key == 'module-name') {  // backend uses another notion of this parameter
+        if (key === 'module-name') {  // backend uses another notion of this parameter
           processedSubSearchInput['module'] = processedSubSearchInput['module-name'];
           delete processedSubSearchInput['module-name'];
         }
-        if (key == 'description') {  // need to add additional parameters to description
+        if (key === 'description') {  // need to add additional parameters to description
           processedSubSearchInput[key]['case_insensitive'] = subSearchInput[0][key][0]['case_insensitive'];
           processedSubSearchInput[key]['use_synonyms'] = subSearchInput[0][key][0]['use_synonyms'];
         }
@@ -406,20 +406,26 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
             if (!subResult.hasOwnProperty(control.get('col').value)) {
               subResult[control.get('col').value] = [];
             }
-            if ('description' == control.get('col').value) {
-              subResult[control.get('col').value].push({term: control.get('term').value,
-                                                        must: control.get('must').value,
-                                                        regex: control.get('regex').value,
-                                                        case_insensitive: control.get('case_insensitive').value,
-                                                        use_synonyms: control.get('use_synonyms').value});
+            if ('description' === control.get('col').value) {
+              subResult[control.get('col').value].push({
+                term: control.get('term').value,
+                must: control.get('must').value,
+                regex: control.get('regex').value,
+                case_insensitive: control.get('case_insensitive').value,
+                use_synonyms: control.get('use_synonyms').value
+              });
             }
             else if (['name', 'module-name'].includes(control.get('col').value)) {
-              subResult[control.get('col').value].push({term: control.get('term').value,
-                                                        must: control.get('must').value,
-                                                        regex: control.get('regex').value});
+              subResult[control.get('col').value].push({
+                term: control.get('term').value,
+                must: control.get('must').value,
+                regex: control.get('regex').value
+              });
             } else {
-              subResult[control.get('col').value].push({term: control.get('term').value,
-                                                        must: control.get('must').value});
+              subResult[control.get('col').value].push({
+                term: control.get('term').value,
+                must: control.get('must').value
+              });
             }
             hasSomeInput = true;
           }

@@ -8,7 +8,6 @@ import { merge, Observable, of, Subject, zip } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { ModuleDetailsModel } from './models/module-details-model';
-import { ModuleImplementationModel } from './models/module-implementation-model';
 import { ModuleInfoMetaDataModel } from './models/module-info-meta-data-model';
 import { YangImplementationsModalComponent } from './yang-implementations-modal/yang-implementations-modal.component';
 import { YangModuleDetailsService } from './yang-module-details.service';
@@ -55,8 +54,6 @@ export class YangModuleDetailsComponent implements OnInit, OnDestroy {
 
   private componentDestroyed: Subject<void> = new Subject<void>();
 
-  private revisionsMaturityLevel;
-
   constructor(
     private fb: FormBuilder,
     private dataService: YangModuleDetailsService,
@@ -89,6 +86,13 @@ export class YangModuleDetailsComponent implements OnInit, OnDestroy {
       moduleName: ['', Validators.required, this.getNonexistingValidator()],
       moduleRevision: ['']
     });
+
+    this.form.controls['moduleName'].valueChanges
+      .subscribe(name => {
+        if (name.includes(' ')) {
+          this.form.controls['moduleName'].setValue(name.trim());
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -227,7 +231,7 @@ export class YangModuleDetailsComponent implements OnInit, OnDestroy {
 
   checkIfRatified(revision: string) {
     for (const revMat of this.infoData['revisions']) {
-      if (revMat['revision'] == revision) {
+      if (revMat['revision'] === revision) {
         return revMat['is_rfc'];
       }
     }

@@ -103,12 +103,26 @@ export class YangValidatorComponent implements OnInit, OnDestroy {
     this.draftNameForm = this.formBuilder.group({
       draftName: ['', Validators.required, this.getNonexistingValidator()]
     });
+
+    this.draftNameForm.controls['draftName'].valueChanges
+      .subscribe(name => {
+        if (name.includes(' ')) {
+          this.draftNameForm.controls['draftName'].setValue(name.trim());
+        }
+      });
   }
 
   private initRfcNumberForm() {
     this.rfcNumberForm = this.formBuilder.group({
       rfcNumber: ['', [Validators.required, this.ycValidations.getNumberValidation()]]
     });
+
+    this.rfcNumberForm.controls['rfcNumber'].valueChanges
+      .subscribe(name => {
+        if (name.includes(' ')) {
+          this.rfcNumberForm.controls['rfcNumber'].setValue(name.trim());
+        }
+      });
   }
 
   private getVersions() {
