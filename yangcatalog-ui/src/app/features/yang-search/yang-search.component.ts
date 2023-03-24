@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { YcValidationsService } from '../../core/yc-validations.service';
 import { AppAgGridComponent } from '../../shared/ag-grid/app-ag-grid.component';
 import { YangShowNodeModalComponent } from '../yang-show-node/yang-show-node-modal/yang-show-node-modal.component';
+import { AdvancedSubSearchInput } from './models/advanced-search-input';
 import { YangSearchService } from './yang-search.service';
 
 @Component({
@@ -53,14 +54,10 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   allColDefs: ColDef[] = [
     { colId: 'name', field: 'name', maxWidth: 150, headerName: 'Name' },
     { colId: 'revision', field: 'revision', maxWidth: 90, headerName: 'Revision' },
-    { colId: 'schemaType', field: 'schema-type', maxWidth: 130, headerName: 'Schema type' },
     { colId: 'path', field: 'path', maxWidth: 270, headerName: 'Path' },
     { colId: 'module', field: 'module-name', headerName: 'Module', maxWidth: 150 },
-    { colId: 'origin', field: 'origin', maxWidth: 130, headerName: 'Origin' },
     { colId: 'organization', field: 'organization', maxWidth: 140, headerName: 'Organization' },
     { colId: 'maturity', field: 'maturity', maxWidth: 100, headerName: 'Maturity' },
-    { colId: 'importedByNumberModules', field: 'dependents', maxWidth: 120, headerName: 'Imported by # Modules' },
-    { colId: 'compilationStatus', field: 'compilation-status', maxWidth: 130, headerName: 'Compilation Status' },
     { colId: 'description', field: 'description', headerName: 'Description', maxWidth: 400 },
   ];
   currentColDefs = [];
@@ -195,6 +192,10 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
               index: [0],
               term: [''],
               col: ['name'],
+              must: [true],
+              regex: [false],
+              case_insensitive: [true],
+              use_synonyms: [false],
               op: ['and'],
             }
           )
@@ -239,6 +240,28 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.form.get(formGroupName).value.indexOf(myValue) !== -1;
   }
 
+  selectAdvanceSearch(isAdvTab: boolean) {
+    const el_input = document.getElementById('searchTermInput');
+    const el_label = document.getElementById('searchTermInputLabel');
+
+    if (isAdvTab && el_input.style.display !== 'none') {
+      el_input.style.display = 'none';
+      el_label.style.display = 'none';
+
+      // Updating validator so that main search term is empty
+      this.form.get('searchTerm').setValidators([]);
+
+    } else if (!isAdvTab && el_input.style.display === 'none') {
+      el_input.style.display = 'block';
+      el_label.style.display = 'block';
+
+      // Updating validator so that main search term is not empty
+      this.form.get('searchTerm').setValidators([Validators.required, Validators.minLength(3), this.ycValidations.regexpValidation()]);
+
+    }
+    this.form.get('searchTerm').updateValueAndValidity();
+  }
+
   onSearchClick() {
     this.searchingProgress = true;
     this.error = null;
@@ -247,38 +270,100 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showWarnings = true;
     this.warnings = [];
     this.currentColDefs = this.allColDefs.filter((col: ColDef) => this.form.get('outputColumns').value.indexOf(col.field) !== -1);
-    const input = {
-      'searched-term': this.form.get('searchTerm').value,
-      'case-sensitive': this.form.get('searchOptions').get('caseSensitive').value,
-      type: this.form.get('searchOptions').get('regularExpression').value ? 'regexp' : 'term',
-      'include-mibs': this.form.get('searchOptions').get('includeMibs').value,
-      'latest-revision': this.form.get('searchOptions').get('onlyLatestRevs').value,
-      'use-synonyms': this.form.get('searchOptions').get('useSynonyms').value,
-      'include-drafts': this.form.get('searchOptions').get('includeDrafts').value,
-      'searched-fields': this.form.get('searchFields').value,
-      'yang-versions': this.form.get('yangVersions').value,
-      'schema-types': this.form.get('schemaTypes').value,
-      'output-columns': this.form.get('outputColumns').value,
-      'sub-search': this.prepareSubSearchInput()
-    };
-    this.dataService.getSearchResults(input).pipe(
-      finalize(() => this.searchingProgress = false),
-      takeUntil(this.componentDestroyed)
-    ).subscribe(
-      results => {
-        if (results['max-hits']) {
-          this.warnings.push('Maximum number of results reached. Not all results will be shown.');
+    let subSearchInput = this.prepareSubSearchInput();  // params in Advanced Search tab
+
+    if (subSearchInput.length == 0) {
+      // simple search
+      console.log('simple search without advanced params');
+
+      const input = {
+        'searched-term': this.form.get('searchTerm').value,
+        'case-sensitive': this.form.get('searchOptions').get('caseSensitive').value,
+        type: this.form.get('searchOptions').get('regularExpression').value ? 'regexp' : 'term',
+        'include-mibs': this.form.get('searchOptions').get('includeMibs').value,
+        'latest-revision': this.form.get('searchOptions').get('onlyLatestRevs').value,
+        'use-synonyms': this.form.get('searchOptions').get('useSynonyms').value,
+        'include-drafts': this.form.get('searchOptions').get('includeDrafts').value,
+        'searched-fields': this.form.get('searchFields').value,
+        'yang-versions': this.form.get('yangVersions').value,
+        'schema-types': this.form.get('schemaTypes').value,
+        'output-columns': this.form.get('outputColumns').value,
+        'sub-search': subSearchInput
+      };
+
+      this.dataService.getSearchResults(input).pipe(
+        finalize(() => this.searchingProgress = false),
+        takeUntil(this.componentDestroyed)
+      ).subscribe(
+        results => {
+          if (results['max-hits']) {
+            this.warnings.push('Maximum number of results reached. Not all results will be shown.');
+          }
+          if (results['timeout']) {
+            this.warnings.push('Timeout while searching. Please try searching for something more specific.');
+          }
+          this.results = results;
+        },
+        err => {
+          this.error = err;
+          console.error(err);
         }
-        if (results['timeout']) {
-          this.warnings.push('Timeout while searching. Please try searching for something more specific.');
+      );
+
+    } else {
+      // advanced search
+      console.log('advanced search with params:');
+      console.log(subSearchInput);
+
+      let processedSubSearchInput: AdvancedSubSearchInput = {};
+      // TODO - now we just use the first group, maybe in the future we will return to multiple
+      console.log(subSearchInput);
+      Object.keys(subSearchInput[0]).forEach(key => {
+        processedSubSearchInput[key] = {string: subSearchInput[0][key][0]['term'], must: subSearchInput[0][key][0]['must']};
+        if (subSearchInput[0][key][0].hasOwnProperty('regex')) {
+          processedSubSearchInput[key]['regex'] = subSearchInput[0][key][0]['regex'];
         }
-        this.results = results;
-      },
-      err => {
-        this.error = err;
-        console.error(err);
-      }
-    );
+        if (key == 'module-name') {  // backend uses another notion of this parameter
+          processedSubSearchInput['module'] = processedSubSearchInput['module-name'];
+          delete processedSubSearchInput['module-name'];
+        }
+        if (key == 'description') {  // need to add additional parameters to description
+          processedSubSearchInput[key]['case_insensitive'] = subSearchInput[0][key][0]['case_insensitive'];
+          processedSubSearchInput[key]['use_synonyms'] = subSearchInput[0][key][0]['use_synonyms'];
+        }
+      });
+
+      const input = {
+        'include-mibs': this.form.get('searchOptions').get('includeMibs').value,
+        'latest-revision': this.form.get('searchOptions').get('onlyLatestRevs').value,
+        'yang-versions': this.form.get('yangVersions').value,
+        'schema-types': this.form.get('schemaTypes').value,
+        'output-columns': this.form.get('outputColumns').value,
+        'include-drafts': this.form.get('searchOptions').get('includeDrafts').value,
+        'sub-search': processedSubSearchInput
+      };
+      console.log(input);
+
+      this.dataService.getAdvancedSearchResults(input).pipe(
+        finalize(() => this.searchingProgress = false),
+        takeUntil(this.componentDestroyed)
+      ).subscribe(
+        results => {
+          if (results['max-hits']) {
+            this.warnings.push('Maximum number of results reached. Not all results will be shown.');
+          }
+          if (results['timeout']) {
+            this.warnings.push('Timeout while searching. Please try searching for something more specific.');
+          }
+          this.results = results;
+        },
+        err => {
+          this.error = err;
+          console.error(err);
+        }
+      );
+
+    }
   }
 
   onGridReady(event: any) {
@@ -321,7 +406,21 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
             if (!subResult.hasOwnProperty(control.get('col').value)) {
               subResult[control.get('col').value] = [];
             }
-            subResult[control.get('col').value].push(control.get('term').value);
+            if ('description' == control.get('col').value) {
+              subResult[control.get('col').value].push({term: control.get('term').value,
+                                                        must: control.get('must').value,
+                                                        regex: control.get('regex').value,
+                                                        case_insensitive: control.get('case_insensitive').value,
+                                                        use_synonyms: control.get('use_synonyms').value});
+            }
+            else if (['name', 'module-name'].includes(control.get('col').value)) {
+              subResult[control.get('col').value].push({term: control.get('term').value,
+                                                        must: control.get('must').value,
+                                                        regex: control.get('regex').value});
+            } else {
+              subResult[control.get('col').value].push({term: control.get('term').value,
+                                                        must: control.get('must').value});
+            }
             hasSomeInput = true;
           }
         });
@@ -347,6 +446,10 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       index: [groupIndex + 1],
       term: [''],
       col: ['name'],
+      must: [true],
+      regex: [false],
+      case_insensitive: [true],
+      use_synonyms: [false],
       op: ['and'],
     }
     );
@@ -370,21 +473,6 @@ export class YangSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     modalNodeDetail.path = row['path'];
     modalNodeDetail.revision = row['revision'];
     modalNodeDetail.paramsSetManually.next(true);
-  }
-
-  addAdvSearchGroup() {
-    const advancedGroupsArray: FormArray = this.form.get('advanced') as FormArray;
-    advancedGroupsArray.push(this.fb.array([
-      this.fb.group(
-        {
-          index: [0],
-          term: [''],
-          col: ['name'],
-          op: ['and'],
-        }
-      )
-    ]));
-
   }
 
   onCloseWarnings() {

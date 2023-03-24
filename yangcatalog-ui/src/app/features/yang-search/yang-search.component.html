@@ -1,5 +1,3 @@
-
-
 <div class="yc-container yc-app-container" style="padding:128px 16px;" [ngClass]="{maximized: resultsMaximized}">
   <div class="yc-row-padding">
     <div class="yc-col" #contentCol>
@@ -11,13 +9,13 @@
             encountered an unknown error.'}}</ngb-alert>
 
 
-          <label class="control-label" for="searchTermInput">Search term</label>
+          <label id="searchTermInputLabel" class="control-label" for="searchTermInput">Search term</label>
           <input id="searchTermInput" formControlName="searchTerm" type="text" class="form-control"
             placeholder="Enter your search term" />
 
         </div>
         <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
-          <li [ngbNavItem]="1">
+          <li [ngbNavItem]="1" (click)="selectAdvanceSearch(false)">
             <a ngbNavLink>Search Options</a>
             <ng-template ngbNavContent>
               <div formGroupName="searchOptions" class="options-category">
@@ -67,7 +65,7 @@
               </div>
             </ng-template>
           </li>
-          <li [ngbNavItem]="4">
+          <li [ngbNavItem]="4" (click)="selectAdvanceSearch(false)">
             <a ngbNavLink>Schema Types</a>
             <ng-template ngbNavContent>
               <div formGroupName="schemaTypes">
@@ -111,7 +109,7 @@
               </div>
             </ng-template>
           </li>
-          <li [ngbNavItem]="5">
+          <li [ngbNavItem]="5" (click)="selectAdvanceSearch(false)">
             <a ngbNavLink>Output Columns</a>
             <ng-template ngbNavContent>
               <div formGroupName="outputColumns">
@@ -156,7 +154,7 @@
               </div>
             </ng-template>
           </li>
-          <li [ngbNavItem]="6">
+          <li [ngbNavItem]="6" (click)="selectAdvanceSearch(true)">
             <a ngbNavLink>Advanced search</a>
             <ng-template ngbNavContent>
               <div *ngFor="let advSearchGroup of form.get('advanced')['controls']; let i = index"
@@ -173,6 +171,37 @@
                     <select class="form-select" id="advancedColumnSelect_{{i}}_{{j}}" formControlName="col">
                       <option value="{{col['value']}}" *ngFor="let col of columnsList">{{col['value']}}</option>
                     </select>
+
+                    <label for="must_{{i}}_{{j}}" class="advanced-search-checkbox">
+                      <input id="must_{{i}}_{{j}}" type="checkbox" name="must" formControlName="must" checked />
+                      <i class="skin"></i>
+                      <span>Must</span>
+                    </label>
+
+                    <label *ngIf="['name', 'module-name', 'description'].includes(advSearchTerm.value.col)"
+                      for="regex_{{i}}_{{j}}" class="advanced-search-checkbox">
+                      <input id="regex_{{i}}_{{j}}" type="checkbox" name="regex" formControlName="regex" />
+                      <i class="skin"></i>
+                      <span>Regex</span>
+                    </label>
+
+                    <label *ngIf="advSearchTerm.value.col == 'description'" for="case_insensitive_{{i}}_{{j}}"
+                      class="advanced-search-checkbox">
+                      <input id="case_insensitive_{{i}}_{{j}}" type="checkbox" name="case_insensitive"
+                        formControlName="case_insensitive" />
+                      <i class="skin"></i>
+                      <span>Case Sensitive</span>
+                    </label>
+
+                    <label *ngIf="advSearchTerm.value.col == 'description'" for="use_synonyms_{{i}}_{{j}}"
+                      class="advanced-search-checkbox">
+                      <input id="use_synonyms_{{i}}_{{j}}" type="checkbox" name="use_synonyms"
+                        formControlName="use_synonyms" />
+                      <i class="skin"></i>
+                      <span>Use Synonyms</span>
+                    </label>
+
+
                     <button id="removeCriteriaBtn_{{i}}_{{j}}" class="btn btn-sm px-ml-5" aria-label="Remove this term"
                       [disabled]="form.get('advanced')['controls'].length === 1 && advSearchGroup['controls'].length === 1"
                       (click)="removeAdvSearchTerm(i, j)" ngbTooltip="Remove this term">
@@ -187,11 +216,6 @@
 
 
               </div>
-              <button id="addAdvGroup" class="btn " aria-label="Add one more term to this group"
-                (click)="addAdvSearchGroup()" ngbTooltip="Add one more group">
-                <i class="bi bi-plus-circle"></i>
-                Add group of search criteria
-              </button>
             </ng-template>
           </li>
 
