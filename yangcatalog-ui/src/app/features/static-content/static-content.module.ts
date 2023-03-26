@@ -12,7 +12,15 @@ import { UseComponent } from './use/use.component';
 import { YangCatalogComponent } from './yang-catalog/yang-catalog.component';
 
 @NgModule({
-  declarations: [YangCatalogComponent, AboutComponent, ContributeComponent, StaticContentComponent, ContactComponent, UseComponent, QueryComponent],
+  declarations: [
+    YangCatalogComponent,
+    AboutComponent,
+    ContributeComponent,
+    StaticContentComponent,
+    ContactComponent,
+    UseComponent,
+    QueryComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,

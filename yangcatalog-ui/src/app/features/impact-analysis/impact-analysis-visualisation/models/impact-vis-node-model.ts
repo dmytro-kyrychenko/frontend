@@ -26,7 +26,8 @@ export class ImpactVisNodeModel implements TopologyNodeDataModel {
   };
 
 
-  constructor(id: string, label: string, organization: string, maturity: string, color: string, borderColor: string, isDependency: boolean, isDependent: boolean) {
+  constructor(id: string, label: string, organization: string, maturity: string, color: string,
+              borderColor: string, isDependency: boolean, isDependent: boolean) {
     this.id = id;
     this.label = label;
     this.organization = organization;

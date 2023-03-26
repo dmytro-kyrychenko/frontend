@@ -19,9 +19,9 @@ export class InfoMessageDialogComponent implements OnInit {
     this.dataSource = this.data.infoMessages;
     this.checkJobId();
     if (this.containsJobId) {
-      this.displayedColumns = ['label', 'message', 'result']
+      this.displayedColumns = ['label', 'message', 'result'];
     } else {
-      this.displayedColumns = ['label', 'message']
+      this.displayedColumns = ['label', 'message'];
     }
   }
 

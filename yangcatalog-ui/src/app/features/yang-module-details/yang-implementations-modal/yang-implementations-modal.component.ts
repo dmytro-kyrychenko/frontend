@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, AfterContentChecked, TemplateRef, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ModuleImplementationModel } from '../models/module-implementation-model';
 
@@ -7,7 +7,7 @@ import { ModuleImplementationModel } from '../models/module-implementation-model
   templateUrl: './yang-implementations-modal.component.html',
   styleUrls: ['./yang-implementations-modal.component.scss']
 })
-export class YangImplementationsModalComponent implements OnInit {
+export class YangImplementationsModalComponent implements OnInit, AfterContentChecked {
 
   @ViewChild('plainTextTemplate') public plainTextTemplate: TemplateRef<any>;
   @ViewChild('deviationTemplate') public deviationTemplate: TemplateRef<any>;

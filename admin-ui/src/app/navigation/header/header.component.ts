@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from 'src/app/others/services/auth.service';
 
 @Component({
@@ -6,12 +6,10 @@ import { AuthService } from 'src/app/others/services/auth.service';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
     @Output() public sidenavToggle = new EventEmitter();
 
     constructor(readonly authService: AuthService) {}
-
-    ngOnInit() {}
 
     onToggleSidenav = () => {
         this.sidenavToggle.emit();

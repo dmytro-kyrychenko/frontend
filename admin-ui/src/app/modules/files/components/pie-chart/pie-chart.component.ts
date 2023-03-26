@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label, SingleDataSet, Color } from 'ng2-charts';
 
@@ -7,7 +7,7 @@ import { Label, SingleDataSet, Color } from 'ng2-charts';
   templateUrl: './pie-chart.component.html',
   styleUrls: ['./pie-chart.component.scss']
 })
-export class PieChartComponent implements OnInit {
+export class PieChartComponent {
   @Input() title: string;
   @Input() labels: Label[];
   @Input() data: SingleDataSet[];
@@ -32,8 +32,6 @@ export class PieChartComponent implements OnInit {
   };
 
   constructor() { }
-
-  ngOnInit(): void { }
 
   // Transform bytes to more user-friendly format
   private formatBytes(bytes: number, decimals: number = 2): string {

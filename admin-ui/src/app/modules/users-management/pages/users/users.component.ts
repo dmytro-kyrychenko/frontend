@@ -27,7 +27,7 @@ export class UsersComponent implements OnInit {
   tableDetailsList = [
     { 'name': 'approved', 'label': 'approved users' },
     { 'name': 'temp', 'label': 'users waiting for approval' }
-  ]
+  ];
   selectedTable: string;
   dialogRefSubscription: Subscription;
   error = false;

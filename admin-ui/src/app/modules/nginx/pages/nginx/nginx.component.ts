@@ -70,7 +70,7 @@ export class NginxComponent implements OnInit {
     this.textEditor.startLoading();
     this.nginxService.saveConfig(editedConfig)
     .pipe(finalize( () => {
-      this.textEditor.stopLoading()
+      this.textEditor.stopLoading();
     } ))
     .subscribe(
       response => {

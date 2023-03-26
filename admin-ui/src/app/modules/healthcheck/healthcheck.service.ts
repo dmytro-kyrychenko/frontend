@@ -33,7 +33,7 @@ export class HealthcheckService {
       case 'Success':
         return '#96c87d'; // green
       case 'In Progress':
-        return '#7dc8d3' // blue
+        return '#7dc8d3'; // blue
     }
   }
 

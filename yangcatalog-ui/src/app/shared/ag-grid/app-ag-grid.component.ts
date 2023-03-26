@@ -67,7 +67,6 @@ export class AppAgGridComponent implements AfterViewInit, OnInit, OnDestroy {
 
   /**
    * Fields, which can not be hidden using columnsCustomizationTool
-   * @type {any[]}
    */
   @Input() mandatoryCols: string[] = [];
   /**

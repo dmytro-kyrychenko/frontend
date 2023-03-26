@@ -19,7 +19,7 @@ export class JobListComponent implements OnInit, OnDestroy {
           this.init();
         }
       }
-    )
+    );
     this.init();
   }
 

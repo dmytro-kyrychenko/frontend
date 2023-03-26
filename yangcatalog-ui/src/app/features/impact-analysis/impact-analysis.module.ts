@@ -17,7 +17,14 @@ import { ImpactAnalysisComponent } from './impact-analysis.component';
 
 
 @NgModule({
-  declarations: [ImpactAnalysisComponent, ImpactAnalysisVisualisationComponent, NodeContextMenuComponent, ClusterContextMenuComponent, ImpactNodesListComponent, ImpactWarningsComponent],
+  declarations: [
+    ImpactAnalysisComponent,
+    ImpactAnalysisVisualisationComponent,
+    NodeContextMenuComponent,
+    ClusterContextMenuComponent,
+    ImpactNodesListComponent,
+    ImpactWarningsComponent
+  ],
   entryComponents: [ImpactNodesListComponent, ImpactWarningsComponent],
   providers: [PtTopologyService, ClusteringService],
   imports: [
