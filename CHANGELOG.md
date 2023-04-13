@@ -1,5 +1,10 @@
 ## Frontend Release Notes
 
+* ##### v5.11.0 - 2023-04-13
+
+  * Trim whitespaces in multiple input fields [#25](https://github.com/YangCatalog/frontend/issues/25)
+  * Advanced search functionality extended [#22](https://github.com/YangCatalog/frontend/issues/22)
+
 * ##### v5.10.1 - 2023-03-20
 
   * Bugfix: compilation results table displaying [#30](https://github.com/YangCatalog/frontend/issues/30)
