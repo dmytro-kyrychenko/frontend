@@ -1,5 +1,9 @@
 ## Frontend Release Notes
 
+* ##### v5.11.1 - 2023-05-03
+
+  * SSL certificate renewal instructions added to README.md file [#36](https://github.com/YangCatalog/frontend/issues/36)
+
 * ##### v5.11.0 - 2023-04-13
 
   * Trim whitespaces in multiple input fields [#25](https://github.com/YangCatalog/frontend/issues/25)
