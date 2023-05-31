@@ -1,5 +1,9 @@
 ## Frontend Release Notes
 
+* ##### v5.12.0 - 2023-05-31
+
+  * No changes - released with other [deployment submodules](https://github.com/YangCatalog/deployment)
+
 * ##### v5.11.1 - 2023-05-03
 
   * SSL certificate renewal instructions added to README.md file [#36](https://github.com/YangCatalog/frontend/issues/36)
