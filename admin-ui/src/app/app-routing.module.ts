@@ -27,6 +27,12 @@ const routes: Routes = [
     canLoad: [PageGuard]
   },
   {
+    path: 'redis',
+    loadChildren: () => import('./modules/redis/redis.module').then(mod => mod.RedisModule),
+    canActivate: [PageGuard],
+    canLoad: [PageGuard]
+  },
+  {
     path: 'nginx-config',
     loadChildren: () => import('./modules/nginx/nginx.module').then(mod => mod.NginxModule),
     canActivate: [PageGuard],
