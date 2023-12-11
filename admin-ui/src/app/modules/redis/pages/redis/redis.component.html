@@ -5,7 +5,18 @@
 </mat-card>
 
 <ng-container *ngIf="!error">
-  <app-text-editor #textEditor *ngIf="!isLoading" [text]="configText" (saveConfirm)="saveChange($event)"></app-text-editor>
+  <form (ngSubmit)="onFormSubmit()" [formGroup]="redisForm" novalidate autocomplete="off">
+    <mat-form-field class="w-100">
+      <mat-label>Redis Key</mat-label>
+      <input matInput formControlName="redis-key" />
+    </mat-form-field>
+    <button mat-raised-button type="submit" color="primary" [disabled]="isTableLoading" class="loader-button">
+      <span [hidden]="isTableLoading">Load</span>
+      <app-loader [isLoading]="isTableLoading"></app-loader>
+    </button>
+  </form>
+
+  <app-text-editor #textEditor *ngIf="!isLoading" [text]="redisText" (saveConfirm)="saveChange($event)"></app-text-editor>
 </ng-container>
 
 <div *ngIf="error">

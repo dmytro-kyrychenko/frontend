@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RedisService {
-  private redisRoute = '/api/admin/yangcatalog-redis';
+  private redisRoute = '/api/admin/yangcatalog-config';
   constructor(private http: HttpClient) { }
 
   fetchRedisDocument(): Observable<any> {
